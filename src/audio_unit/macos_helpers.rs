@@ -212,16 +212,14 @@ pub fn get_audio_device_supports_scope(devid: AudioDeviceID, scope: Scope) -> Re
         // audio_buffers.reserve_exact(count as usize);
         // unsafe { audio_buffers.set_len(count as usize) };
 
-        let status = unsafe {
-            AudioObjectGetPropertyData(
-                devid,
-                &property_address as *const _,
-                0,
-                null(),
-                &data_size as *const _ as *mut _,
-                buffers as *mut _,
-            )
-        };
+        let status = AudioObjectGetPropertyData(
+            devid,
+            &property_address as *const _,
+            0,
+            null(),
+            &data_size as *const _ as *mut _,
+            buffers as *mut _,
+        );
         if status != kAudioHardwareNoError as i32 {
             libc::free(buffers as *mut libc::c_void);
             return Err(Error::Unknown(status));
